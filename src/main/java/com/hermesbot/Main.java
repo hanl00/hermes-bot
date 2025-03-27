@@ -2,18 +2,25 @@ package com.hermesbot;
 
 import com.hermesbot.commands.AddCommand;
 import com.hermesbot.config.Config;
+import com.hermesbot.database.DatabaseHelper;
 import com.hermesbot.listeners.MyListener;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
 
 public class Main {
+    public static final Logger logger = LoggerFactory.getLogger(Main.class);
+
     public static void main(String[] args) throws LoginException {
         String TOKEN = Config.getDiscordToken();
+
+        DatabaseHelper.initialize();
 
         JDABuilder jdaBuilder = JDABuilder.createDefault(TOKEN, GatewayIntent.GUILD_MESSAGES,
                         GatewayIntent.DIRECT_MESSAGES,
