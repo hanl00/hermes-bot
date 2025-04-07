@@ -1,6 +1,7 @@
 package com.hermesbot;
 
 import com.hermesbot.commands.AddCommand;
+import com.hermesbot.commands.SetReminderCommand;
 import com.hermesbot.config.Config;
 import com.hermesbot.database.DatabaseHelper;
 import com.hermesbot.listeners.MyListener;
@@ -25,13 +26,16 @@ public class Main {
         JDABuilder jdaBuilder = JDABuilder.createDefault(TOKEN, GatewayIntent.GUILD_MESSAGES,
                         GatewayIntent.DIRECT_MESSAGES,
                         GatewayIntent.MESSAGE_CONTENT)
-                .addEventListeners(new MyListener(), new AddCommand());
+                .addEventListeners(new MyListener(), new AddCommand(), new SetReminderCommand());
 
         jdaBuilder.setActivity(Activity.customStatus("Ready to help!"));
 
         jdaBuilder.build().updateCommands().addCommands(
                 Commands.slash("add", "Adds numbers together")
-                        .addOption(OptionType.STRING, "numbers", "Enter numbers separated by spaces", true)
+                        .addOption(OptionType.STRING, "numbers", "Enter numbers separated by spaces", true),
+                Commands.slash("setreminder", "Set a reminder")
+                        .addOption(OptionType.STRING, "time", "Time until reminder (e.g. 10m, 2h)", true)
+                        .addOption(OptionType.STRING, "message", "What should I remind you about?", true)
         ).queue();
     }
 }
